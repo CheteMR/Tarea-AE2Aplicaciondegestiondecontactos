@@ -1,0 +1,440 @@
+package vista;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
+
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import controlador.Controlador;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.EventQueue;
+
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Vector;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.DropMode;
+
+public class Ventana extends JFrame {
+	
+	JLabel titulo;
+	//JLabel logo;
+	JButton botonAdd;
+	JButton botonDelete;
+	JButton botonEdit;
+	
+	//JLabel lblNewLabel_1;
+	JTextField nombre;
+	JTextField telefono;
+	JMenuBar barra;
+	JMenu menu;
+	JMenuItem añadir,editar,eliminar;
+	private int selectedRow = -1;
+    Ventana misContactos;
+    
+    
+  
+    
+	
+
+	
+	JTable table; 
+	DefaultTableModel tableModel;
+	public DefaultTableModel getTableModel() {
+		return tableModel;
+	}
+	
+
+	public Ventana() {
+		
+		getContentPane().setBackground(new Color (145,177,217));
+		setBounds(100,100, 560,560); 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+		setResizable(false);
+		setTitle("Mis contactos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("img/agenda (1).png"));
+		Ventana misContactos = this;
+		this.misContactos = misContactos;
+		inicializarVariables();
+		transparenciaBoton();
+		setVisible(true);
+	
+		
+		
+		
+	}
+	
+	JScrollPane scrollPane; // El contenedor, la tabla irá metida dentro del Pane.
+	private void inicializarVariables() {
+		
+		JLabel TextoTitulo = new JLabel ("Agenda Teléfonica");
+		TextoTitulo.setFont (new Font ("Comic Sans MS", Font.BOLD, 25));
+		TextoTitulo.setBounds(150, -80, 250, 250);
+		
+		getContentPane().add(TextoTitulo);
+		
+		JLabel TextoAdd = new JLabel("Añadir Contacto");
+		TextoAdd.setFont(new Font("Tahoma", Font.BOLD, 11));
+		TextoAdd.setHorizontalAlignment(SwingConstants.CENTER);
+		TextoAdd.setBounds(37, 472, 120, 28);
+		getContentPane().add(TextoAdd);
+		
+		botonAdd = new JButton ("");
+		
+	
+		
+		
+		
+		
+		botonAdd.setIcon(new ImageIcon(Ventana.class.getResource("/img/añadir.png")));
+		
+		
+		botonAdd.setToolTipText("");
+		botonAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		botonAdd.setFont(botonAdd.getFont().deriveFont(11f));
+		botonAdd.setBounds(27, 407, 133, 73);
+		botonAdd.getCursor();
+		getContentPane().add(botonAdd);
+		
+		botonAdd.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+		
+		
+		JLabel TextoEliminar = new JLabel("Eliminar Contacto");
+		TextoEliminar.setHorizontalAlignment(SwingConstants.CENTER);
+		TextoEliminar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		TextoEliminar.setBounds(212, 472, 120, 28);
+		getContentPane().add(TextoEliminar);
+		
+		botonDelete = new JButton("");
+		botonDelete.setBounds(202, 395, 145, 97);
+		botonDelete.setIcon(new ImageIcon(Ventana.class.getResource("/img/eliminar.png")));
+		getContentPane().add(botonDelete);
+		
+		botonDelete.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				tableModel.removeRow(fila);
+			}
+		});
+	
+	
+		
+		botonDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+		
+		
+		
+		JLabel TextoEditar = new JLabel("Editar Contacto");
+		TextoEditar.setHorizontalAlignment(SwingConstants.CENTER);
+		TextoEditar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		TextoEditar.setBounds(380, 472, 120, 28);
+		getContentPane().add(TextoEditar);
+		
+		botonEdit = new JButton("");
+		botonEdit.setBounds(370, 395, 145, 97);
+		botonEdit.setIcon(new ImageIcon(Ventana.class.getResource("/img/editar.png")));
+		getContentPane().add(botonEdit);
+		
+		botonEdit.addActionListener(new ActionListener() {
+		
+		
+
+		
+
+		
+		private Ventana ventana;
+
+		@Override
+		
+		public void actionPerformed(ActionEvent e) {
+		
+		int selectedRow = table.getSelectedRow();
+		if(selectedRow >=0) {
+			Ventana3 ventana3 = new Ventana3(this.ventana);
+			ventana3.setData(tableModel.getValueAt(selectedRow, 0).toString(),tableModel.getValueAt(selectedRow, 1).toString());
+			ventana3.setVisible(true);
+		
+		}
+		}
+			});
+			
+			
+		
+		//logo = new JLabel(new ImageIcon(Ventana.class.getResource("/img/agenda (1).png")));
+		//logo.setBounds(27, -5, 97, 97);
+		//add(logo);
+	
+		//Creamos la tabla 
+		String[]nombreColumnas={"Nombre","Número de teléfono"};
+		tableModel = new DefaultTableModel(nombreColumnas,0);
+		
+		table = new JTable(tableModel);
+	
+		
+		
+		
+		Color myColor = new Color(209,224,243);
+		table.setBackground(myColor);
+		
+		JScrollPane colorTabla = new JScrollPane (table);
+		table.setFillsViewportHeight(true);
+		colorTabla.getViewport().setBackground(myColor);
+		
+		scrollPane = new JScrollPane (table);
+		scrollPane.setBounds(130,80,280,280);
+	
+		add(scrollPane);
+		
+		
+		
+	
+		
+		//Barra Menú
+		
+		barra= new JMenuBar();
+		barra.setBounds(0, 0, 560, 20);
+		add(barra);
+		
+		menu = new JMenu("Menú");
+		barra.add(menu);
+		
+		añadir = new JMenuItem("Añadir");
+		editar = new JMenuItem ("Editar");
+		eliminar = new JMenuItem("Eliminar");
+		menu.add(añadir);
+		menu.add(editar);
+		menu.add("Eliminar");
+		
+	
+	}
+		
+	
+		
+	
+	public DefaultTableModel getTableModel1() {
+      return tableModel;
+	}
+	
+	public void agregarContacto(String nombre, String telefono) {
+        Object[] fila = {nombre, telefono};
+        tableModel.addRow(fila);
+	
+	}
+	
+	
+	public void addRow(String name, String phone) {		
+		tableModel.addRow(new String[]{name,phone});
+	}	
+	
+
+	
+	
+	
+
+        
+        
+       
+	public void transparenciaBoton () {
+		botonAdd.setOpaque(false);
+		botonAdd.setContentAreaFilled(false);
+		botonAdd.setBorderPainted(false);
+		
+		
+		botonEdit.setOpaque(false);
+		botonEdit.setContentAreaFilled(false);
+		botonEdit.setBorderPainted(false);
+		
+		botonDelete.setOpaque(false);
+		botonDelete.setContentAreaFilled(false);
+		botonDelete.setBorderPainted(false);
+	}
+	
+	
+	
+	
+	public void setControlador (Controlador controlador) {
+	botonAdd.addActionListener(controlador);
+	//botonEdit.addActionListener(controlador);
+	botonDelete.addActionListener(controlador);
+	añadir.addActionListener(controlador);
+	editar.addActionListener(controlador);
+ }
+	
+	public void updateRow(String nombre, String telefono) {
+		
+		if(selectedRow >=0) {
+			tableModel.setValueAt(nombre, selectedRow, 0);
+			tableModel.setValueAt(telefono, selectedRow, 1);
+			selectedRow = -1;
+		}else {
+			System.err.println("Error: selectedRow es menor que cero en updateRow");
+	    }
+	}
+
+
+
+	
+	
+
+	
+	public JButton getBotonAdd() {
+		return botonAdd;
+	}
+
+	public void setBotonAdd(JButton botonAdd) {
+		this.botonAdd = botonAdd;
+	}
+
+	public JButton getBotonDelete() {
+		return botonDelete;
+	}
+
+	public void setBotonDelete(JButton botonDelete) {
+		this.botonDelete = botonDelete;
+	}
+
+	public JButton getBotonEdit() {
+		return botonEdit;
+	}
+
+	public void setBotonEdit(JButton botonEdit) {
+		this.botonEdit = botonEdit;
+	}
+
+	public JTextField getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(JTextField nombre) {
+		this.nombre = nombre;
+	}
+
+	public JTextField getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(JTextField telefono) {
+		this.telefono = telefono;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+	public void setTableModel(DefaultTableModel tableModel) {
+		this.tableModel = tableModel;
+	}
+
+
+	public JMenuItem getAñadir() {
+		return añadir;
+	}
+
+
+	public void setAñadir(JMenuItem añadir) {
+		this.añadir = añadir;
+	}
+
+
+	public JMenuItem getEditar() {
+		return editar;
+	}
+
+
+	public void setEditar(JMenuItem editar) {
+		this.editar = editar;
+	}
+
+
+	public JMenuItem getEliminar() {
+		return eliminar;
+	}
+
+
+	public void setEliminar(JMenuItem eliminar) {
+		this.eliminar = eliminar;
+	}
+
+
+	public int getSelectedRow() {
+		return selectedRow;
+	}
+
+
+	public void setSelectedRow(int selectedRow) {
+		this.selectedRow = selectedRow;
+	}
+
+
+	
+	}
+	
+
+	
+	
+

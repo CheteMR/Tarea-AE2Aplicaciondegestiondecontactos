@@ -1,0 +1,32 @@
+package controlador;
+
+
+
+import vista.Portada;
+import vista.Ventana;
+import vista.Ventana2;
+import vista.Ventana3;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Portada portada = new Portada();
+		//Ventana ventana = new Ventana();
+		//Ventana2 ventana2 = new Ventana2();
+		Controlador controlador = new Controlador(portada);
+		//ventana.setControlador(controlador);
+		
+		
+	
+		
+		//ventana2.setControlador(controlador);
+		
+		
+		
+		
+		
+		
+
+	}
+
+}

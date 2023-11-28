@@ -1,0 +1,194 @@
+package vista;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
+
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import controlador.Controlador;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+
+import javax.swing.JTextField;
+import javax.swing.DropMode;
+
+public class Ventana2 extends JFrame {
+	
+	JLabel etiquetaN;
+	JLabel etiquetaT;
+	JTextField cajaTextoN;
+	JTextField cajaTextoT;
+	JButton ok, cancel;
+	Ventana misContactos; 
+
+	
+
+	public Ventana2(Ventana misContactos) {
+		this.misContactos = misContactos;
+		getContentPane().setBackground(new Color (145,177,217));
+		setBounds(100,100, 280,280); 
+	//	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+		setResizable(false);
+		setTitle("Añadir contactos");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("img/agenda (1).png"));
+		inicializarVariables();
+		setVisible(true);
+		
+		
+	}
+	
+	
+	private void inicializarVariables() {
+		
+		JLabel TextoTitulo = new JLabel ("Agenda Teléfonica");
+		TextoTitulo.setFont (new Font ("Comic Sans MS", Font.BOLD, 25));
+		TextoTitulo.setBounds(150, -80, 250, 250);
+		
+		etiquetaN = new JLabel ("Nombre:");
+		etiquetaN.setBounds(30,30,80,80);
+		add(etiquetaN);
+		
+		etiquetaT = new JLabel ("Teléfono:");
+		etiquetaT.setBounds(30,95,80,80);
+		add(etiquetaT);
+		
+		cajaTextoN = new JTextField();
+		cajaTextoN.setBounds(90,60,140,25);
+		add(cajaTextoN);
+		
+		cajaTextoT = new JTextField();
+		cajaTextoT.setBounds(90,125,140,25);
+		add(cajaTextoT);
+		
+		ok = new JButton("OK");
+		ok.setFont( new Font("Tahoma", Font.BOLD, 11));
+		ok.setBounds(90,200,60,20);
+		add(ok);
+		
+		cancel = new JButton("Cancel");
+		cancel.setFont( new Font("Tahoma", Font.BOLD, 11));
+		cancel.setBounds(170,200,90,20);
+		add(cancel);
+		
+		
+		ok.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(cajaTextoN.getText().isEmpty()) JOptionPane.showMessageDialog(null, "El campo nombre no puede estar vacío", "Error", JOptionPane.WARNING_MESSAGE);
+				misContactos.addRow(cajaTextoN.getText(), cajaTextoT.getText());
+				dispose();
+			}});
+		JButton cancel = new JButton("Cancel");
+		cancel.setActionCommand("Cancel");
+		cancel.add(cancel);
+		
+		cancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+			}});
+	}
+	
+	
+	
+
+	
+	public void setControlador (Controlador controlador) {
+		ok.addActionListener(controlador);
+		cancel.addActionListener(controlador);
+	}
+	
+	
+
+
+	public JLabel getEtiquetaN() {
+		return etiquetaN;
+	}
+
+
+	public void setEtiquetaN(JLabel etiquetaN) {
+		this.etiquetaN = etiquetaN;
+	}
+
+
+	public JLabel getEtiquetaT() {
+		return etiquetaT;
+	}
+
+
+	public void setEtiquetaT(JLabel etiquetaT) {
+		this.etiquetaT = etiquetaT;
+	}
+
+
+	public JTextField getCajaTextoN() {
+		return cajaTextoN;
+	}
+
+
+	public void setCajaTextoN(JTextField cajaTextoN) {
+		this.cajaTextoN = cajaTextoN;
+	}
+
+
+	public JTextField getCajaTextoT() {
+		return cajaTextoT;
+	}
+
+
+	public void setCajaTextoT(JTextField cajaTextoT) {
+		this.cajaTextoT = cajaTextoT;
+	}
+
+
+	public JButton getOk() {
+		return ok;
+	}
+
+
+	public void setOk(JButton ok) {
+		this.ok = ok;
+	}
+
+
+	public JButton getCancel() {
+		return cancel;
+	}
+
+
+	public void setCancel(JButton cancel) {
+		this.cancel = cancel;
+	}
+	
+	
+
+	
+	
+}
+
